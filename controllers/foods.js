@@ -39,6 +39,55 @@ router.post("/", async function (req, res) {
     }
 });
 
+// show route
+router.get("/:itemId", async function (req, res) {
+    try {
+        const currentUser = await User.findById(req.session.user._id);
+        const foodDoc = currentUser.pantry.id(req.params.itemId);
+        res.render("foods/show.ejs", { food: foodDoc });
+    } catch (error) {
+        console.log(error);
+        res.redirect("/");
+    }
+});
+
+router.delete("/:itemId", async function (req, res) {
+    try {
+        const currentUser = await User.findById(req.session.user._id);
+        currentUser.pantry.id(req.params.itemId).deleteOne();
+        await currentUser.save();
+
+        res.redirect(`/users/${req.session.user._id}/foods`);
+    } catch (error) {
+        console.log(error);
+        res.redirect("/");
+    }
+});
+
+router.get("/:itemId/edit", async function (req, res) {
+    try {
+        const currentUser = await User.findById(req.session.user._id);
+        const foodDoc = currentUser.pantry.id(req.params.itemId);
+
+        res.render("foods/edit.ejs", { food: foodDoc });
+    } catch (error) {
+        console.log(error);
+        res.redirect("/");
+    }
+});
+
+router.put("/:itemId", async function (req, res) {
+    try {
+        const currentUser = await User.findById(req.session.user._id);
+        const foodDoc = currentUser.pantry.id(req.params.itemId);
+        foodDoc.set(req.body);
+        await currentUser.save();
+        res.redirect(`/users/${req.session.user._id}/foods/${req.params.itemId}`);
+    } catch (error) {
+        console.log(error);
+        res.redirect("/");
+    }
+});
 // ----------------------------------
 
 module.exports = router;

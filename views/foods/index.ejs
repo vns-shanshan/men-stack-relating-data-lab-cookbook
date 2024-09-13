@@ -15,12 +15,13 @@
   <% if (foods && foods.length > 0) { %>
   <ul>
     <% foods.forEach(food => { %>
-    <li><%= food.name %></li>
+    <li><a href="/users/<%= user._id %>/foods/<%= food._id %>"><%= food.name %></a></li>
     <% }) %>
   </ul>
   <% } else { %>
   <p>There are no items in this pantry.</p>
   <% } %>
+
 </body>
 
 </html>
