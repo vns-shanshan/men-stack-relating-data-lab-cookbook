@@ -10,6 +10,7 @@ const session = require('express-session');
 // ------------- Import controllers--------------
 const authController = require('./controllers/auth.js');
 const foodsController = require("./controllers/foods.js");
+const usersController = require("./controllers/users.js");
 // ---------------------------------------------------
 
 // ------------- Import Middleware -----------------
@@ -52,6 +53,7 @@ app.get('/vip-lounge', (req, res) => {
 
 app.use(passUserToView);
 app.use('/auth', authController);
+app.use("/users", usersController);
 app.use(isSignedIn);
 app.use("/users/:userId/foods", foodsController);
 
